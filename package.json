@@ -1,0 +1,25 @@
+{
+  "name": "rrr-webapp",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "watch": "tsc -w",
+    "dev": "nodemon dist/index.js",
+    "start": "ts-node src/index.tsx",
+    "startdist": "node dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^18.11.2",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "global": "^4.4.0",
+    "ts-node": "^10.9.1",
+    "typeorm": "^0.3.10"
+  }
+}
