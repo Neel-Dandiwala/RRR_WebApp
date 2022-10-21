@@ -1,6 +1,7 @@
 import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, OneToMany, UpdateDateColumn, CreateDateColumn } from "typeorm";
 import { Waste } from "./Waste";
 
+
 @Entity()
 export class Agent extends BaseEntity {
 
