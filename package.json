@@ -11,7 +11,10 @@
     "startdist": "node dist/index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "Neel Dandiwala",
+    "email": "nee]dandi@gmail.com"
+  },
   "license": "ISC",
   "devDependencies": {
     "@types/node": "^18.11.2",

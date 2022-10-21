@@ -1,5 +1,4 @@
-import { Entity, ObjectID, ObjectIdColumn, Column, BaseEntity, PrimaryGeneratedColumn, OneToMany, UpdateDateColumn, CreateDateColumn } from "typeorm";
-import { Waste } from "./Waste";
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn } from "typeorm";
 
 @Entity()
 export class Company extends BaseEntity {
