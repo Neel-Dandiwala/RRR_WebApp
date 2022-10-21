@@ -31,7 +31,7 @@ export class User extends BaseEntity {
     @Column()
     userState: string;
 
-    @OneToMany(() => Waste, (waste) => waste.userOwner)
+    @OneToMany(() => Waste, (waste) => waste.wasteUser)
     userWaste: Waste[];
 
     @CreateDateColumn()

@@ -1,8 +1,6 @@
 {
     "type": "mongodb",
-    "host": "localhost",
-    "port": 27017,
-    "database": "test",
+    "useNewUrlParser": true,
     "synchronize": true,
     "logging": false,
     "entities": [
