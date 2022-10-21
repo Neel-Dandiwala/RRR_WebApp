@@ -5,6 +5,11 @@ import { User } from "./entities/User";
 import { Agent } from "./entities/Agent";
 import { Company } from "./entities/Company";
 import { Waste } from "./entities/Waste";
+import express from "express";
+import cors from "cors";
+import { ApolloServer } from "apollo-server-express";
+import { buildSchema } from "type-graphql";
+import { TrialResolver } from "./resolvers/Trial";
 
 const main = async () => {
     const connection = new DataSource({
@@ -22,6 +27,38 @@ const main = async () => {
         .catch((err) => {
             console.error("Error: ", err);
         })
+
+    const apolloServer = new ApolloServer({
+        schema: await buildSchema({
+            resolvers: [TrialResolver],
+            validate: false
+        }),
+
+    })
+
+    await apolloServer.start();
+
+    const app = express();
+    app.set("trust proxy", 1); // Enabling trust proxy for last / rightmost value
+
+    app.use(
+        cors({
+            origin: process.env.CORS_ORIGIN,
+            credentials: true,
+        })
+    );
+
+    apolloServer.applyMiddleware({app, path: '/'});
+
+    app.get("/", (_, res) => {
+        res.send("Hello");
+        console.log("here");
+    })
+
+    app.listen(4000, () => {
+        console.log("Server started on localhost:4000")
+    });
+
 };
 
 main().catch((err) => {
