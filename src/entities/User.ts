@@ -41,7 +41,7 @@ export class User extends BaseEntity {
     @Column()
     userState: string;
 
-    @OneToMany(() => Waste, (waste) => waste.wasteUser)
+    @OneToMany(() => Waste, (waste) => waste.wasteId)
     userWaste: Waste[];
 
     @Field(() => String)

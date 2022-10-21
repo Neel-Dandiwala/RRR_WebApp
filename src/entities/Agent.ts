@@ -40,7 +40,7 @@ export class Agent extends BaseEntity {
     agentState: string;
 
     @Field()
-    @OneToMany(() => Waste, (waste) => waste.wasteAgent)
+    @OneToMany(() => Waste, (waste) => waste.wasteId)
     agentWaste: Waste[];
 
     @Field(() => String)

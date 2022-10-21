@@ -10,6 +10,7 @@ import cors from "cors";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { TrialResolver } from "./resolvers/Trial";
+import { UserResolver } from "./resolvers/UserServices";
 
 const main = async () => {
     const connection = new DataSource({
@@ -30,11 +31,14 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [TrialResolver],
+            resolvers: [TrialResolver, UserResolver],
             validate: false
         }),
-
-    })
+        context: ({ req, res }) => ({
+            req,
+            res,
+        }),
+    });
 
     await apolloServer.start();
 
