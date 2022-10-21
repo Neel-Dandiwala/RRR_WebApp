@@ -23,7 +23,7 @@ export class Agent extends BaseEntity {
     @Column()
     agentPassword!: string;
 
-    @Field()
+    @Field(() => Int)
     @Column()
     agentAge: number;
 
@@ -39,8 +39,7 @@ export class Agent extends BaseEntity {
     @Column()
     agentState: string;
 
-    @Field()
-    @OneToMany(() => Waste, (waste) => waste.wasteId)
+    @OneToMany(() => Waste, (waste) => waste.wasteAgent)
     agentWaste: Waste[];
 
     @Field(() => String)

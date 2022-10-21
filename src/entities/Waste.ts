@@ -23,10 +23,12 @@ export class Waste {
     @Column()
     wasteState: string;
 
-    @ManyToOne(() => User, (user) => user.userId)
+    @Field(() => User)
+    @ManyToOne(() => User, (user) => user.userWaste)
     wasteUser: User;
 
-    @ManyToOne(() => Agent, (agent) => agent.agentId)
+    @Field(() => Agent)
+    @ManyToOne(() => Agent, (agent) => agent.agentWaste)
     wasteAgent: Agent;
 
     @Field()

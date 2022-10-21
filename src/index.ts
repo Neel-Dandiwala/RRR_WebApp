@@ -23,11 +23,20 @@ const main = async () => {
 
     connection.initialize()
         .then(() => {
+            console.log(connection)
             console.log("Connection done!");
+            
         })
         .catch((err) => {
             console.error("Error: ", err);
         })
+
+    console.log("Writing data trial");
+    var std = new User();
+    std.userEmail = "19";
+    std.userName = "Shah";
+    console.log(std);
+    await connection.manager.save(std);
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({

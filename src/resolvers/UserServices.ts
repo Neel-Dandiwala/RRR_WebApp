@@ -1,4 +1,4 @@
-import { User } from "src/entities/User";
+import { User } from "../entities/User";
 import { Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql";
 import { serverContext } from "../types";
 
@@ -10,7 +10,7 @@ import { serverContext } from "../types";
 export class UserResolver{
 
     @FieldResolver(() => String)
-    email(@Root() user: User, @Ctx() {req}: serverContext) {
+    userEmail(@Root() user: User, @Ctx() {req}: serverContext) {
         console.log(req);
         return user.userEmail;
     }

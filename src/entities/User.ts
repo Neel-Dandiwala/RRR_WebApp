@@ -27,11 +27,11 @@ export class User extends BaseEntity {
 
     @Field()
     @Column()
-    userAddress!: string;
+    userAddress: string;
 
     @Field()
     @Column({ unique: true })
-    userMobile!: string;
+    userMobile: string;
 
     @Field()
     @Column()
