@@ -31,7 +31,7 @@ const main = async () => {
             console.error("Error: ", err);
         })
 
-    console.log("Writing data trial");
+    console.log("Writing data trial in MONGO");
     var std = new User();
     std.userEmail = "19";
     std.userName = "Shah";
