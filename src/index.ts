@@ -11,21 +11,28 @@ import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { TrialResolver } from "./resolvers/Trial";
 import { UserResolver } from "./resolvers/UserServices";
+import { appDataSource } from "./datasource";
+import { connection } from "./connection";
 
 const main = async () => {
-    const mongodb = require('mongodb');
-    const MongoClient = mongodb.MongoClient;
-    const connection = new MongoClient('mongodb+srv://mongodb:mongodb@rrrcluster.nluljzi.mongodb.net/rrrdatabase?retryWrites=true&w=majority', { useNewUrlParser: true });
 
-    await connection.connect(() => {
-        const collection = connection.db('rrrdatabase').collection('test');
-        console.log(collection);
+    appDataSource.initialize();
 
-        console.log("Writing data trial in MONGO");
-        var std = new User();
-        std.userEmail = "27";
-        std.userName = "Xiu";
-        console.log(std);
+    await connection.connect();
+
+    // const mongodb = require('mongodb');
+    // const MongoClient = mongodb.MongoClient;
+    // const connection = new MongoClient('mongodb+srv://mongodb:mongodb@rrrcluster.nluljzi.mongodb.net/rrrdatabase?retryWrites=true&w=majority', { useNewUrlParser: true });
+
+    // await connection.connect(() => {
+    //     const collection = connection.db('rrrdatabase').collection('test');
+    //     console.log(collection);
+
+    //     console.log("Writing data trial in MONGO");
+    //     var std = new User();
+    //     std.userEmail = "27";
+    //     std.userName = "Xiu";
+    //     console.log(std);
 
         //Successful Insertion
 
@@ -35,7 +42,7 @@ const main = async () => {
         //     connection.close();
         // });
          
-    })
+    // })
 
     // Successful Reading
 

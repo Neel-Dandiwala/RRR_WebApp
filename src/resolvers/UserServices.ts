@@ -1,6 +1,6 @@
 import { User } from "../entities/User";
 import { Ctx, FieldResolver, Query, Resolver, Root } from "type-graphql";
-import { serverContext } from "../types";
+import { serverContext } from "../context";
 
 // @ObjectType()
 // class FieldError {}

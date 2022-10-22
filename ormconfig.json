@@ -1,5 +1,6 @@
 {
     "type": "mongodb",
+    "url": "mongodb+srv://mongodb:mongodb@rrrcluster.nluljzi.mongodb.net/rrrdatabase?retryWrites=true&w=majority",
     "useNewUrlParser": true,
     "synchronize": true,
     "logging": false,
