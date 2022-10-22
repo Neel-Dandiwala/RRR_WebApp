@@ -13,30 +13,33 @@ import { TrialResolver } from "./resolvers/Trial";
 import { UserResolver } from "./resolvers/UserServices";
 
 const main = async () => {
-    const connection = new DataSource({
-        type: "mongodb",
-        url: process.env.DATABASE_URL,
-        logging: true,
-        migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Agent, Company, Waste],
+    const mongodb = require('mongodb');
+    const MongoClient = mongodb.MongoClient;
+    const connection = new MongoClient('mongodb+srv://mongodb:mongodb@rrrcluster.nluljzi.mongodb.net/rrrdatabase?retryWrites=true&w=majority', { useNewUrlParser: true });
+
+    connection.connect(() => {
+        const collection = connection.db('rrrdatabase').collection('test');
+        console.log(collection);
+
+        console.log("Writing data trial in MONGO");
+        var std = new User();
+        std.userEmail = "27";
+        std.userName = "Xiu";
+        console.log(std);
+        collection.insertOne(std, function (err, result) {
+            if (err) throw err;
+            console.log("ADDED" + result);
+            connection.close();
+        });
+
     })
 
-    connection.initialize()
-        .then(() => {
-            console.log(connection)
-            console.log("Connection done!");
-            
-        })
-        .catch((err) => {
-            console.error("Error: ", err);
-        })
-
-    console.log("Writing data trial in MONGO");
-    var std = new User();
-    std.userEmail = "19";
-    std.userName = "Shah";
-    console.log(std);
-    await connection.manager.save(std);
+    // console.log("Writing data trial in MONGO");
+    // var std = new User();
+    // std.userEmail = "19";
+    // std.userName = "Shah";
+    // console.log(std);
+    // await connection.manager.save(std);
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
