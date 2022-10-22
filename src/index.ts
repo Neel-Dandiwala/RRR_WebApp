@@ -17,7 +17,7 @@ const main = async () => {
     const MongoClient = mongodb.MongoClient;
     const connection = new MongoClient('mongodb+srv://mongodb:mongodb@rrrcluster.nluljzi.mongodb.net/rrrdatabase?retryWrites=true&w=majority', { useNewUrlParser: true });
 
-    connection.connect(() => {
+    await connection.connect(() => {
         const collection = connection.db('rrrdatabase').collection('test');
         console.log(collection);
 
@@ -26,20 +26,29 @@ const main = async () => {
         std.userEmail = "27";
         std.userName = "Xiu";
         console.log(std);
-        collection.insertOne(std, function (err, result) {
-            if (err) throw err;
-            console.log("ADDED" + result);
-            connection.close();
-        });
 
+        //Successful Insertion
+
+        // collection.insertOne(std, function (err, result) {
+        //     if (err) throw err;
+        //     console.log("ADDED" + result);
+        //     connection.close();
+        // });
+         
     })
 
-    // console.log("Writing data trial in MONGO");
-    // var std = new User();
-    // std.userEmail = "19";
-    // std.userName = "Shah";
-    // console.log(std);
-    // await connection.manager.save(std);
+    // Successful Reading
+
+    // const collection = connection.db('rrrdatabase').collection('test');
+    // const results = async () => {
+    //     const items = await collection.find({}).toArray();
+    //     console.log(items);
+    //     connection.close();
+    // }
+    // results().catch((err) => {
+    //     console.error(err);
+    // });
+    
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
