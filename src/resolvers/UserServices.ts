@@ -1,5 +1,5 @@
 import { User } from "../entities/User";
-import { Args, Ctx, Field, FieldResolver, Mutation, ObjectType, Query, Resolver, Root } from "type-graphql";
+import { Arg, Args, Ctx, Field, FieldResolver, Mutation, ObjectType, Query, Resolver, Root } from "type-graphql";
 import { serverContext } from "../context";
 import { ResponseFormat } from "./Format";
 import { validation } from "../utils/validation";
@@ -84,6 +84,47 @@ export class UserResolver{
         }
         
         return { logs };
+
+    }
+
+    @Mutation(() => UserResponse) 
+    async login(
+        @Arg("usernameEmail") usernameEmail: string,
+        @Arg("password") password: string,
+        @Ctx() { req }: serverContext
+    ): Promise<UserResponse> {
+        const user = await connection.db('rrrdatabase').collection('test').findOne( usernameEmail.includes('@') ? { userEmail: usernameEmail } : { userName: usernameEmail });
+        if(!user) {
+            return {
+                logs: [
+                    {
+                        field: "Invalid username or email",
+                        message: "Such username or email does not exist"
+                    }
+                ]
+            }
+        }
+
+        const validPassword = await argon2.verify(user.userPassword, password);
+        if (!validPassword) {
+            return { 
+                logs: [
+                    {
+                        field: "Password",
+                        message: "Password is incorrect"+validPassword
+                    }
+                ]
+            }
+        }
+
+        return { 
+            logs: [
+                {
+                    field: "Login successful",
+                    message: "You have successfully logged in"
+                }
+            ]
+        };
 
     }
 }
