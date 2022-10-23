@@ -16,7 +16,7 @@ import { connection } from "./connection";
 
 const main = async () => {
 
-    appDataSource.initialize();
+    // appDataSource.initialize();
 
     await connection.connect();
 

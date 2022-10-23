@@ -1,14 +1,14 @@
-import { Field, Int, ObjectType } from "type-graphql";
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, OneToMany, UpdateDateColumn, CreateDateColumn } from "typeorm";
+import { Field, ID, Int, ObjectType } from "type-graphql";
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, OneToMany, UpdateDateColumn, CreateDateColumn, ObjectIdColumn, ObjectID } from "typeorm";
 import { Waste } from "./Waste";
 
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
 
-    @Field(() => Int)
-    @PrimaryGeneratedColumn()
-    userId!: number;
+    @Field(() => ID)
+    @ObjectIdColumn()
+    _id: ObjectID;
 
     @Field()
     @Column({ unique: true })
@@ -44,11 +44,11 @@ export class User extends BaseEntity {
     @OneToMany(() => Waste, (waste) => waste.wasteId)
     userWaste: Waste[];
 
-    @Field(() => String)
+    @Field()
     @CreateDateColumn()
     userCreatedAt: Date;
 
-    @Field(() => String)
+    @Field()
     @UpdateDateColumn()
     userUpdatedAt: Date;
 }
