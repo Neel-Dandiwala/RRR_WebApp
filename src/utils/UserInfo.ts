@@ -1,30 +1,41 @@
-import { ArgsType, Field, InputType } from "type-graphql";
+import { ArgsType, Field, InputType, Int } from "type-graphql";
 
 @ArgsType()
 @InputType()
 export class UserInfo {
 
-    @Field()
+    @Field(() => String)
     userName: string;
 
-    @Field()
+    @Field(() => String)
     userEmail: string;
 
-    @Field()
+    @Field(() => String)
     userPassword: string;
 
-    @Field()
+    @Field(() => Int)
     userAge: number;
 
-    @Field()
+    @Field(() => String)
     userAddress: string;
 
-    @Field()
+    @Field(() => String)
     userMobile: string;
 
-    @Field()
+    @Field(() => String)
     userCity: string;
 
-    @Field()
+    @Field(() => String)
+    userState: string;
+}
+
+export type UserInfoType = {
+    userName: string;
+    userEmail: string;
+    userPassword: string;
+    userAge: number;
+    userAddress: string;
+    userMobile: string;
+    userCity: string;
     userState: string;
 }

@@ -31,9 +31,9 @@ export class UserResolver{
 
     @Mutation(() => UserResponse)
     async signUp(
-        @Args("details") details: UserInfo,
+        @Args('details', () => UserInfo) details: UserInfo,
         @Ctx() { req }: serverContext
-    ): Promise<UserResponse | boolean> {
+    ): Promise<UserResponse> {
         let credentials = new CredentialsInput()
         credentials.email = details.userEmail;
         credentials.username = details.userName;
