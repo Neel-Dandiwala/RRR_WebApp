@@ -1,27 +1,19 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne } from "typeorm";
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, ManyToOne, ObjectIdColumn, ObjectID } from "typeorm";
 import { User } from "./User";
 import { Agent } from "./Agent";
-import { Field, ObjectType } from "type-graphql";
+import { Field, ID, ObjectType } from "type-graphql";
 
 @ObjectType()
 @Entity()
 export class Waste {
 
-    @Field()
-    @PrimaryGeneratedColumn()
-    wasteId!: number;
+    @Field(() => ID)
+    @ObjectIdColumn()
+    _id: ObjectID;
 
     @Field()
     @Column()
-    wasteTitle!: string;
-
-    @Field()
-    @Column()
-    wasteCity: string;
-
-    @Field()
-    @Column()
-    wasteState: string;
+    wasteContent!: string;
 
     @Field(() => User)
     @ManyToOne(() => User, (user) => user.userWaste)

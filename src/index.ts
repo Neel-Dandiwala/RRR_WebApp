@@ -13,6 +13,7 @@ import { TrialResolver } from "./resolvers/Trial";
 import { UserResolver } from "./resolvers/UserServices";
 import { appDataSource } from "./datasource";
 import { connection } from "./connection";
+import { WasteResolver } from "./resolvers/WasteServices";
 
 const main = async () => {
 
@@ -59,7 +60,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [TrialResolver, UserResolver],
+            resolvers: [TrialResolver, UserResolver, WasteResolver],
             validate: false
         }),
         context: ({ req, res }) => ({
