@@ -34,7 +34,7 @@ export class UserResolver{
         @Args('details', () => UserInfo) details: UserInfo,
         @Ctx() { req }: serverContext
     ): Promise<UserResponse> {
-        let credentials = new CredentialsInput()
+        let credentials = new CredentialsInput();
         credentials.email = details.userEmail;
         credentials.username = details.userName;
         credentials.password = details.userPassword;
@@ -62,7 +62,7 @@ export class UserResolver{
                     userCreatedAt: new Date(),
                     userUpdatedAt: new Date()
                 }
-                )
+            )
         } catch (err) {
                 return err;
         }
@@ -117,11 +117,13 @@ export class UserResolver{
             }
         }
 
+        req.session.userID = user._id
+
         return { 
             logs: [
                 {
                     field: "Login successful",
-                    message: "You have successfully logged in"
+                    message: "You have successfully logged in "+req.session.userID,
                 }
             ]
         };

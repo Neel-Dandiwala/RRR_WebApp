@@ -1,5 +1,5 @@
-import { Field, Int, ObjectType } from "type-graphql";
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, OneToMany, UpdateDateColumn, CreateDateColumn } from "typeorm";
+import { Field, ID, Int, ObjectType } from "type-graphql";
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, OneToMany, UpdateDateColumn, CreateDateColumn, ObjectID, ObjectIdColumn } from "typeorm";
 import { Waste } from "./Waste";
 // import { MaxLength, Length } from "class-validator";
 
@@ -7,9 +7,9 @@ import { Waste } from "./Waste";
 @Entity()
 export class Agent extends BaseEntity {
 
-    @Field(() => Int)
-    @PrimaryGeneratedColumn()
-    agentId!: number;
+    @Field(() => ID)
+    @ObjectIdColumn()
+    _id: ObjectID;
 
     @Field()
     @Column({ unique: true })

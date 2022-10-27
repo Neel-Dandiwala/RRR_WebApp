@@ -1,19 +1,23 @@
 import "reflect-metadata";
-import { DataSource } from "typeorm";
-import path from "path";
-import { User } from "./entities/User";
-import { Agent } from "./entities/Agent";
-import { Company } from "./entities/Company";
-import { Waste } from "./entities/Waste";
 import express from "express";
+import session from "express-session";
+import { default as connectMongoDBSession } from 'connect-mongodb-session';
 import cors from "cors";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { TrialResolver } from "./resolvers/Trial";
 import { UserResolver } from "./resolvers/UserServices";
-import { appDataSource } from "./datasource";
 import { connection } from "./connection";
 import { WasteResolver } from "./resolvers/WasteServices";
+import { AgentResolver } from "./resolvers/AgentResolver";
+import { CompanyResolver } from "./resolvers/CompanyResolver";
+import { ObjectID } from "typeorm";
+
+declare module 'express-session' {
+    export interface SessionData {
+      userID: { [key: string]: ObjectID };
+    }
+  }
 
 const main = async () => {
 
@@ -56,11 +60,22 @@ const main = async () => {
     // results().catch((err) => {
     //     console.error(err);
     // });
+
     
+    
+    const MongoDBStore = connectMongoDBSession(session);
+    const sessionStore = new MongoDBStore({
+        uri: 'mongodb+srv://mongodb:mongodb@rrrcluster.nluljzi.mongodb.net/rrrdatabase?retryWrites=true&w=majority',
+        collection: 'sessions'
+    });
+
+    sessionStore.on('error', function(error){
+        console.log(error);
+    })
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [TrialResolver, UserResolver, WasteResolver],
+            resolvers: [TrialResolver, UserResolver, WasteResolver, AgentResolver, CompanyResolver],
             validate: false
         }),
         context: ({ req, res }) => ({
@@ -80,6 +95,20 @@ const main = async () => {
             credentials: true,
         })
     );
+
+    app.use(session(
+        {
+            secret: 'VriddhiSanketKrishna',
+            cookie: {
+                maxAge: 1000 * 60 * 60 * 24 * 7,
+                httpOnly: true,
+                sameSite: 'lax',
+            },
+            store: sessionStore,
+            saveUninitialized: false,
+            resave: false,
+        }
+    ));
 
     apolloServer.applyMiddleware({app, path: '/'});
 
