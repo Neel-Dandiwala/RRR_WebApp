@@ -20,6 +20,9 @@ export class UserInfo {
     userAddress: string;
 
     @Field(() => String)
+    userPincode: string;
+
+    @Field(() => String)
     userMobile: string;
 
     @Field(() => String)

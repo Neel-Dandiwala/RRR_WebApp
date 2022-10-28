@@ -12,6 +12,9 @@ import { UserInfo } from "../utils/UserInfo";
 class UserResponse {
     @Field(() => [ResponseFormat], { nullable: true })
     logs?: ResponseFormat[];
+
+    @Field(() => User, {nullable: true})
+    agent?: User;
 }
 
 @Resolver(User)
@@ -30,14 +33,14 @@ export class UserResolver{
     }
 
     @Mutation(() => UserResponse)
-    async signUp(
-        @Args('details', () => UserInfo) details: UserInfo,
+    async userSignUp(
+        @Args('userData', () => UserInfo) userData: UserInfo,
         @Ctx() { req }: serverContext
     ): Promise<UserResponse> {
         let credentials = new CredentialsInput();
-        credentials.email = details.userEmail;
-        credentials.username = details.userName;
-        credentials.password = details.userPassword;
+        credentials.email = userData.userEmail;
+        credentials.username = userData.userName;
+        credentials.password = userData.userPassword;
         let logs = validation(credentials);
         if(logs){
             return { logs };
@@ -51,14 +54,15 @@ export class UserResolver{
             .collection('test')
             .insertOne(
                 { 
-                    userName: details.userName, 
-                    userEmail: details.userEmail,
+                    userName: userData.userName, 
+                    userEmail: userData.userEmail,
                     userPassword: hashedPassword,
-                    userAge: details.userAge,
-                    userAddress: details.userAddress,
-                    userMobile: details.userMobile,
-                    userCity: details.userCity,
-                    userState: details.userState,
+                    userAge: userData.userAge,
+                    userAddress: userData.userAddress,
+                    userPincode: userData.userPincode,
+                    userMobile: userData.userMobile,
+                    userCity: userData.userCity,
+                    userState: userData.userState,
                     userCreatedAt: new Date(),
                     userUpdatedAt: new Date()
                 }
@@ -88,7 +92,7 @@ export class UserResolver{
     }
 
     @Mutation(() => UserResponse) 
-    async login(
+    async userLogin(
         @Arg("usernameEmail") usernameEmail: string,
         @Arg("password") password: string,
         @Ctx() { req }: serverContext
@@ -111,19 +115,19 @@ export class UserResolver{
                 logs: [
                     {
                         field: "Password",
-                        message: "Password is incorrect"+validPassword
+                        message: "Password is incorrect"
                     }
                 ]
             }
         }
 
-        req.session.userID = user._id
+        req.session.authenticationID = user._id;
 
         return { 
             logs: [
                 {
                     field: "Login successful",
-                    message: "You have successfully logged in "+req.session.userID,
+                    message: "You have successfully logged in "+req.session.authenticationID,
                 }
             ]
         };

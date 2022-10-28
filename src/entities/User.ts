@@ -29,6 +29,10 @@ export class User extends BaseEntity {
     @Column()
     userAddress: string;
 
+    @Field({ nullable: false })
+    @Column()
+    userPincode: string;
+
     @Field()
     @Column({ unique: true })
     userMobile: string;
@@ -37,7 +41,7 @@ export class User extends BaseEntity {
     @Column()
     userCity: string;
 
-    @Field({ nullable: true })
+    @Field()
     @Column()
     userState: string;
 

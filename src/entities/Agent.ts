@@ -35,9 +35,13 @@ export class Agent extends BaseEntity {
     @Column()
     agentCity: string;
 
-    @Field({ nullable: true })
+    @Field()
     @Column()
     agentState: string;
+
+    @Field({ nullable: false })
+    @Column()
+    agentPincode: string;
 
     @OneToMany(() => Waste, (waste) => waste.wasteAgent)
     agentWaste: Waste[];

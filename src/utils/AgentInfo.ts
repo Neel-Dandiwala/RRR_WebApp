@@ -25,4 +25,7 @@ export class AgentInfo {
     @Field(() => String)
     agentState: string;
 
+    @Field(() => String)
+    agentPincode: string;
+
 }

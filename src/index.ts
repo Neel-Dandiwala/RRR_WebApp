@@ -15,7 +15,7 @@ import { ObjectID } from "typeorm";
 
 declare module 'express-session' {
     export interface SessionData {
-      userID: { [key: string]: ObjectID };
+      authenticationID: { [key: string]: ObjectID };
     }
   }
 

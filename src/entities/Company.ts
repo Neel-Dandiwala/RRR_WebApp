@@ -1,13 +1,13 @@
-import { Field, Int, ObjectType } from "type-graphql";
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn } from "typeorm";
+import { Field, ID, Int, ObjectType } from "type-graphql";
+import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn, ObjectIdColumn, ObjectID } from "typeorm";
 
 @ObjectType()
 @Entity()
 export class Company extends BaseEntity {
 
-    @Field(() => Int)
-    @PrimaryGeneratedColumn()
-    companyId!: number;
+    @Field(() => ID)
+    @ObjectIdColumn()
+    _id: ObjectID;
 
     @Field()
     @Column({ unique: true })
@@ -21,7 +21,7 @@ export class Company extends BaseEntity {
     @Column()
     companyPassword!: string;
 
-    @Field()
+    @Field(() => Int)
     @Column()
     companyPaperPrice: number;
 
@@ -44,6 +44,10 @@ export class Company extends BaseEntity {
     @Field()
     @Column()
     companyState: string;
+
+    @Field({ nullable: false })
+    @Column()
+    companyPincode: string;
 
     @Field(() => String)
     @CreateDateColumn()

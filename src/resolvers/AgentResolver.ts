@@ -1,5 +1,5 @@
 import { serverContext } from "../context";
-import { Args, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { Arg, Args, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
 import { Agent } from "../entities/Agent";
 import { ResponseFormat } from "./Format";
 import { AgentInfo } from "../utils/AgentInfo";
@@ -28,7 +28,7 @@ export class AgentResolver{
     }
 
     @Mutation(() => AgentResponse)
-    async registerAgent(
+    async agentSignUp(
         @Args('agentData', () => AgentInfo) agentData: AgentInfo,
         @Ctx() { req }: serverContext
     ): Promise<AgentResponse> {
@@ -56,6 +56,7 @@ export class AgentResolver{
                     agentMobile: agentData.agentMobile,
                     agentCity: agentData.agentCity,
                     agentState: agentData.agentState,
+                    agentPincode: agentData.agentPincode,
                     agentCreatedAt: new Date(),
                     agentUpdatedAt: new Date(),
                 }
@@ -77,5 +78,47 @@ export class AgentResolver{
                 }
             ]
         }
+    }
+
+    @Mutation(() => AgentResponse)
+    async agentLogin(
+        @Arg("usernameEmail") usernameEmail: string,
+        @Arg("password") password: string,
+        @Ctx() { req }: serverContext
+    ): Promise<AgentResponse> {
+        const agent = await connection.db('rrrdatabase').collection('test').findOne( usernameEmail.includes('@') ? { agentEmail: usernameEmail } : { agentName: usernameEmail });
+        if(!agent) {
+            return {
+                logs: [
+                    {
+                        field: "Invalid username or email",
+                        message: "Such username or email does not exist"
+                    }
+                ]
+            }
+        }
+
+        const validPassword = await argon2.verify(agent.agentPassword, password);
+        if(!validPassword) {
+            return {
+                logs: [
+                    {
+                        field: "Password",
+                        message: "Password is incorrect"
+                    }
+                ]
+            }
+        }
+
+        req.session.authenticationID = agent._id;
+
+        return {
+            logs: [
+                {
+                    field: "Login successful",
+                    message: "You have successfully logged in "
+                }
+            ]
+        };
     }
 }
