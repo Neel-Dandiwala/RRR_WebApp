@@ -14,7 +14,7 @@ class UserResponse {
     logs?: ResponseFormat[];
 
     @Field(() => User, {nullable: true})
-    agent?: User;
+    user?: User;
 }
 
 @Resolver(User)
@@ -26,10 +26,11 @@ export class UserResolver{
         return user.userEmail;
     }
 
-    @Query(() => String)
-    postMe(@Ctx() {req}: serverContext) {
+    @Query(() => UserResponse)
+    async postUser(@Ctx() {req}: serverContext) {
+        const user = await connection.db('rrrdatabase').collection('test').findOne({ _id: req.session.authenticationID});
         console.log(req);
-        return "Hoola"
+        return { user }
     }
 
     @Mutation(() => UserResponse)

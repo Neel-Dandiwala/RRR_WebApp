@@ -6,9 +6,9 @@ import cors from "cors";
 import { ApolloServer } from "apollo-server-express";
 import { buildSchema } from "type-graphql";
 import { TrialResolver } from "./resolvers/Trial";
-import { UserResolver } from "./resolvers/UserServices";
+import { UserResolver } from "./resolvers/UserResolver";
 import { connection } from "./connection";
-import { WasteResolver } from "./resolvers/WasteServices";
+import { WasteResolver } from "./resolvers/WasteResolver";
 import { AgentResolver } from "./resolvers/AgentResolver";
 import { CompanyResolver } from "./resolvers/CompanyResolver";
 import { ObjectID } from "typeorm";
@@ -87,22 +87,25 @@ const main = async () => {
     await apolloServer.start();
 
     const app = express();
-    app.set("trust proxy", 1); // Enabling trust proxy for last / rightmost value
+    app.set("trust proxy", true); // Enabling trust proxy for last / rightmost value
 
     app.use(
         cors({
-            origin: process.env.CORS_ORIGIN,
+            origin: 'http://localhost:4000',
             credentials: true,
+            
         })
     );
 
     app.use(session(
         {
+            name: 'rrrid',
             secret: 'VriddhiSanketKrishna',
             cookie: {
                 maxAge: 1000 * 60 * 60 * 24 * 7,
                 httpOnly: true,
                 sameSite: 'lax',
+                secure: false,
             },
             store: sessionStore,
             saveUninitialized: false,
@@ -110,7 +113,12 @@ const main = async () => {
         }
     ));
 
-    apolloServer.applyMiddleware({app, path: '/'});
+    apolloServer.applyMiddleware(
+        {
+            app, 
+            path: '/', 
+            cors:false
+        });
 
     app.get("/", (_, res) => {
         res.send("Hello");
