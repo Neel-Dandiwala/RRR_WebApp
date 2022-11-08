@@ -31,7 +31,7 @@ const theme = extendTheme({
     },
   },
   colors: {
-    black: '#16161D',
+    black: '#2b2d42',
   },
   fonts,
   breakpoints,
