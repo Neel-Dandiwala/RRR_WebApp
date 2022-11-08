@@ -16,6 +16,9 @@ import { CTA } from '../components/CTA'
 import { Footer } from '../components/Footer'
 import { Tree } from '../components/Tree'
 
+
+import TreeScene from "../components/Model";
+
 const Index = () => (
   <Container height="100vh">
     <Hero />
@@ -24,7 +27,8 @@ const Index = () => (
         Example repository of <Code>Next.js</Code> + <Code>chakra-ui</Code> +{' '}
         <Code>TypeScript</Code>.
       </Text>
-      {/* <Tree /> */}
+      <Tree />
+      {/* <TreeScene /> */}
       <List spacing={3} my={0} color="text">
         <ListItem>
           <ListIcon as={CheckCircleIcon} color="green.500" />
