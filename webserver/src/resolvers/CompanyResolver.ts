@@ -1,8 +1,8 @@
-import { Company } from "../entities/Company";
+import { Company } from "../models/Company";
 import { Arg, Args, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
 import { ResponseFormat } from "./Format";
 import { serverContext } from "../context";
-import { CompanyInfo } from "../utils/CompanyInfo";
+import { CompanyInfo } from "../types/CompanyInfo";
 import { CredentialsInput } from "../utils/CredentialsInput";
 import { validation } from "../utils/validation";
 import argon2 from "argon2";

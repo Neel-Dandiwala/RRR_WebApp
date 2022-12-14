@@ -1,8 +1,8 @@
-import { Waste } from "../entities/Waste";
+import { Waste } from "../models/Waste";
 import { Args, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
 import { ResponseFormat } from "./Format";
 import { serverContext } from "../context";
-import { WasteInfo } from "../utils/WasteInfo";
+import { WasteInfo } from "../types/WasteInfo";
 import { connection } from "../connection";
 
 @ObjectType()

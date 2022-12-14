@@ -1,4 +1,4 @@
-import { User } from "../entities/User";
+import { User } from "../models/User";
 import { Arg, Args, Ctx, Field, FieldResolver, Mutation, ObjectType, Query, Resolver, Root } from "type-graphql";
 import { serverContext } from "../context";
 import { ResponseFormat } from "./Format";
@@ -6,7 +6,7 @@ import { validation } from "../utils/validation";
 import argon2 from "argon2";
 import { connection } from "../connection";
 import { CredentialsInput } from "../utils/CredentialsInput";
-import { UserInfo } from "../utils/UserInfo";
+import { UserInfo } from "../types/UserInfo";
 
 @ObjectType()
 class UserResponse {

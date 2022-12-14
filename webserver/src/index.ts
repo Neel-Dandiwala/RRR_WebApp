@@ -3,14 +3,7 @@ import express from "express";
 import session from "express-session";
 import { default as connectMongoDBSession } from 'connect-mongodb-session';
 import cors from "cors";
-import { ApolloServer } from "apollo-server-express";
-import { buildSchema } from "type-graphql";
-import { TrialResolver } from "./resolvers/Trial";
-import { UserResolver } from "./resolvers/UserResolver";
 import { connection } from "./connection";
-import { WasteResolver } from "./resolvers/WasteResolver";
-import { AgentResolver } from "./resolvers/AgentResolver";
-import { CompanyResolver } from "./resolvers/CompanyResolver";
 import { ObjectID } from "typeorm";
 
 declare module 'express-session' {
@@ -18,7 +11,7 @@ declare module 'express-session' {
       authenticationID: { [key: string]: ObjectID };
     }
   }
-// Hey
+
 const main = async () => {
 
     // appDataSource.initialize();
@@ -73,19 +66,6 @@ const main = async () => {
         console.log(error);
     })
 
-    const apolloServer = new ApolloServer({
-        schema: await buildSchema({
-            resolvers: [TrialResolver, UserResolver, WasteResolver, AgentResolver, CompanyResolver],
-            validate: false
-        }),
-        context: ({ req, res }) => ({
-            req,
-            res,
-        }),
-    });
-
-    await apolloServer.start();
-
     const app = express();
     app.set("trust proxy", true); // Enabling trust proxy for last / rightmost value
 
@@ -113,17 +93,9 @@ const main = async () => {
         }
     ));
 
-    apolloServer.applyMiddleware(
-        {
-            app, 
-            path: '/', 
-            cors:false
-        });
+    app.use(require('./routes/Routes'));
+    app.use(require('./routes/UserRoutes'));
 
-    app.get("/", (_, res) => {
-        res.send("Hello");
-        console.log("here");
-    })
 
     app.listen(4000, () => {
         console.log("Server started on localhost:4000")

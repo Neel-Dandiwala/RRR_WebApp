@@ -1,8 +1,8 @@
 import { serverContext } from "../context";
 import { Arg, Args, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
-import { Agent } from "../entities/Agent";
+import { Agent } from "../models/Agent";
 import { ResponseFormat } from "./Format";
-import { AgentInfo } from "../utils/AgentInfo";
+import { AgentInfo } from "../types/AgentInfo";
 import { CredentialsInput } from "../utils/CredentialsInput";
 import { validation } from "../utils/validation";
 import argon2 from "argon2";
