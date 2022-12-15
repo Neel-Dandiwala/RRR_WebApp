@@ -93,8 +93,11 @@ const main = async () => {
         }
     ));
 
+    app.use(express.json());
     app.use(require('./routes/Routes'));
     app.use(require('./routes/UserRoutes'));
+    app.use(require('./routes/AgentRoutes'));
+    app.use(require('./routes/CompanyRoutes'));
 
 
     app.listen(4000, () => {

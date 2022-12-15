@@ -1,56 +1,48 @@
-import { Field, ID, Int, ObjectType } from "type-graphql";
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, OneToMany, UpdateDateColumn, CreateDateColumn, ObjectID, ObjectIdColumn } from "typeorm";
 import { Waste } from "./Waste";
-// import { MaxLength, Length } from "class-validator";
+import { AgentInfo } from "../types/AgentInfo";
+import { model, Schema } from "mongoose";
 
-@ObjectType()
-@Entity()
-export class Agent extends BaseEntity {
+const AgentSchema: Schema = new Schema({
 
-    @Field(() => ID)
-    @ObjectIdColumn()
-    _id: ObjectID;
+    agentName:  {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column({ unique: true })
-    agentName!: string;
+    agentEmail: {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column({ unique: true })
-    agentEmail!: string;
+    agentPassword: {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column()
-    agentPassword!: string;
+    agentAge:  {
+        type: Number,
+        required: true
+    },
 
-    @Field(() => Int)
-    @Column()
-    agentAge: number;
+    agentMobile:  {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column({ unique: true })
-    agentMobile!: string;
+    agentCity:  {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column()
-    agentCity: string;
+    agentState: {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column()
-    agentState: string;
+    agentPincode:  {
+        type: String,
+        required: true
+    },
+}, {timestamps: true})
 
-    @Field({ nullable: false })
-    @Column()
-    agentPincode: string;
-
-    @OneToMany(() => Waste, (waste) => waste.wasteAgent)
-    agentWaste: Waste[];
-
-    @Field(() => String)
-    @CreateDateColumn()
-    agentCreatedAt: Date;
-
-    @Field(() => String)
-    @UpdateDateColumn()
-    agentUpdatedAt: Date;
-}
+export default model<AgentInfo>("Agent", AgentSchema);

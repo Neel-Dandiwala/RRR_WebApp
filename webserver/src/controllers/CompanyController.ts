@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import User from '../models/User';
-import { UserInfo } from '../types/UserInfo';
+import Company from '../models/Company';
+import { CompanyInfo } from '../types/CompanyInfo';
 import { serverContext } from "../context";
 import { ResponseFormat } from "../resolvers/Format";
 import { validation } from "../utils/validation";
@@ -9,17 +9,17 @@ import { connection } from "../connection";
 import { CredentialsInput } from "../utils/CredentialsInput";
 import {MongoServerError} from 'mongodb'
 
-class UserResponse {
+class CompanyResponse {
     logs?: ResponseFormat[];
-    user?: UserInfo;
+    company?: CompanyInfo;
 }
 
-const collection = connection.db('rrrdatabase').collection('test');
+const collection = connection.db('rrrdatabase').collection('company');
 
-// @desc   Get User
-// @route  GET /user/login
+// @desc   Get company
+// @route  GET /company/login
 // @access Private
-const getUsers = async({req, res}:serverContext):Promise<UserResponse> => {
+const getCompanies = async(req: Request, res: Response):Promise<CompanyResponse> => {
         
     try {
         let result;
@@ -48,7 +48,7 @@ const getUsers = async({req, res}:serverContext):Promise<UserResponse> => {
             console.log(result);
             logs = [
                 {
-                    field: "Successful Insertion",
+                    field: "Successful Retrieval",
                     message: "Done",
                 }
             ]
@@ -75,41 +75,41 @@ const getUsers = async({req, res}:serverContext):Promise<UserResponse> => {
 
 
 
-// @desc   Get User
-// @route  GET /user/login
+// @desc   Get company
+// @route  GET /company/login
 // @access Private
-const setUser = async(req: Request, res: Response):Promise<UserResponse> => {
-    console.log(req)
+const setCompany = async(req: Request, res: Response):Promise<CompanyResponse> => {
+    // console.log(req.body)
     try {
-        const userData = req.body  as Pick<UserInfo, "userName" | "userEmail" | "userPassword" | "userAge" | "userAddress" | "userPincode" | "userMobile" | "userCity" | "userState">
-        console.log(userData);
+        const companyData = req.body as Pick<CompanyInfo, "companyName" | "companyEmail" | "companyPassword" | "companyPaperPrice" | "companyPlasticPrice" | "companyElectronicPrice" | "companyAddress" | "companyCity" | "companyState" | "companyPincode">
+        console.log(companyData);
         let credentials = new CredentialsInput();
-        credentials.email = userData.userEmail;
-        credentials.username = userData.userName;
-        credentials.password = userData.userPassword;
+        credentials.email = companyData.companyEmail;
+        credentials.username = companyData.companyName;
+        credentials.password = companyData.companyPassword;
         let logs = validation(credentials);
         if(logs){
-            res.status(400).json({ logs });
-            return {logs};
+            return { logs };
         }
-        
-        const hashedPassword = await argon2.hash(userData.userPassword);
-        const _user: UserInfo = new User({
-            userName: userData.userName, 
-            userEmail: userData.userEmail,
-            userPassword: hashedPassword,
-            userAge: userData.userAge,
-            userAddress: userData.userAddress,
-            userPincode: userData.userPincode,
-            userMobile: userData.userMobile,
-            userCity: userData.userCity,
-            userState: userData.userState,
+
+        const hashedPassword = await argon2.hash(credentials.password);
+        const _company: CompanyInfo = new Company({
+            companyName: companyData.companyName,
+            companyEmail: companyData.companyEmail,
+            companyPassword: hashedPassword,
+            companyPaperPrice: companyData.companyPaperPrice,
+            companyPlasticPrice: companyData.companyPlasticPrice,
+            companyElectronicPrice: companyData.companyElectronicPrice,
+            companyAddress: companyData.companyAddress,
+            companyCity: companyData.companyCity,
+            companyState: companyData.companyState,
+            companyPincode: companyData.companyPincode,
             
         })
 
         let result;
         try {
-            result = await collection.insertOne(_user);
+            result = await collection.insertOne(_company);
         } catch (err) {
             if (err instanceof MongoServerError && err.code === 11000) {
                 console.error("# Duplicate Data Found:\n", err)
@@ -132,7 +132,7 @@ const setUser = async(req: Request, res: Response):Promise<UserResponse> => {
             console.log(result);
             logs = [
                 {
-                    field: "Successful Retrieval",
+                    field: "Successful Insertion",
                     message: "Done",
                 }
             ]
@@ -158,20 +158,20 @@ const setUser = async(req: Request, res: Response):Promise<UserResponse> => {
     }
 }
 
-// @desc   Get User
-// @route  GET /user/login
+// @desc   Get company
+// @route  GET /company/login
 // @access Private
-const updateUser = async({req, res}:serverContext) => {
-    res.status(200).json({ message: 'User Update'});
+const updateCompany = async(req: Request, res: Response) => {
+    res.status(200).json({ message: 'company Update'});
 }
 
-// @desc   Get User
-// @route  GET /user/login
+// @desc   Get company
+// @route  GET /company/login
 // @access Private
-const deleteUser = async({req, res}:serverContext) => {
-    res.status(200).json({ message: 'User Delete'});
+const deleteCompany = async(req: Request, res: Response) => {
+    res.status(200).json({ message: 'company Delete'});
 }
 
 module.exports = {
-    getUsers, setUser, updateUser, deleteUser
+    getCompanies, setCompany, updateCompany, deleteCompany
 }

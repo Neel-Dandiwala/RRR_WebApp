@@ -6,6 +6,7 @@ export interface UserInfo extends Document {
     userPassword: string;
     userAge: number;
     userAddress: string;
+    userPincode: string;
     userMobile: string;
     userCity: string;
     userState: string;

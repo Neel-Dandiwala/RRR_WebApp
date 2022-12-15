@@ -3,6 +3,9 @@ import { Session } from "express-session";
 import { ObjectID } from "typeorm";
 
 export type serverContext = {
-    req: Request  & {session?: Session & {authenticationID? : ObjectID }}
+    req: Request  & {
+        body?: any,
+        session?: Session & {authenticationID? : ObjectID }
+    }
     res: Response 
 }

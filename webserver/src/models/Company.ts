@@ -1,59 +1,65 @@
-import { Field, ID, Int, ObjectType } from "type-graphql";
-import { Entity, Column, BaseEntity, PrimaryGeneratedColumn, UpdateDateColumn, CreateDateColumn, ObjectIdColumn, ObjectID } from "typeorm";
+import { Waste } from "./Waste";
+import { CompanyInfo } from "../types/CompanyInfo";
+import { model, Schema } from "mongoose";
 
-@ObjectType()
-@Entity()
-export class Company extends BaseEntity {
+const CompanySchema: Schema = new Schema({
 
-    @Field(() => ID)
-    @ObjectIdColumn()
-    _id: ObjectID;
+    companyName: {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column({ unique: true })
-    companyName!: string;
+    companyEmail: {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column({ unique: true })
-    companyEmail!: string;
 
-    @Field()
-    @Column()
-    companyPassword!: string;
+    companyPassword: {
+        type: String,
+        required: true
+    },
 
-    @Field(() => Int)
-    @Column()
-    companyPaperPrice: number;
 
-    @Field(() => Int)
-    @Column()
-    companyPlasticPrice: number;
+    companyPaperPrice:  {
+        type: Number,
+        required: true
+    },
 
-    @Field(() => Int)
-    @Column()
-    companyElectronicPrice: number;
+    companyPlasticPrice:  {
+        type: Number,
+        required: true
+    },
 
-    @Field()
-    @Column()
-    companyAddress!: string;
+    companyElectronicPrice:  {
+        type: Number,
+        required: true
+    },
 
-    @Field()
-    @Column()
-    companyCity: string;
+    companyAddress: {
+        type: String,
+        required: true
+    },
 
-    @Field()
-    @Column()
-    companyState: string;
 
-    @Field({ nullable: false })
-    @Column()
-    companyPincode: string;
+    companyCity: {
+        type: String,
+        required: true
+    },
 
-    @Field(() => String)
-    @CreateDateColumn()
-    companyCreatedAt: Date;
 
-    @Field(() => String)
-    @UpdateDateColumn()
-    companyUpdatedAt: Date;
-}
+    companyState: {
+        type: String,
+        required: true
+    },
+
+
+    companyPincode: {
+        type: String,
+        required: true
+    },
+
+
+}, {timestamps: true})
+
+export default model<CompanyInfo>("Company", CompanySchema);

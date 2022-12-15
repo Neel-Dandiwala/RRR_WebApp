@@ -1,11 +1,11 @@
 import express from 'express';
-const { getUser, setUser, updateUser, deleteUser } = require('../controllers/UserController')
+const { getUsers, setUser, updateUser, deleteUser } = require('../controllers/UserController')
 
 const router = express.Router();
 
-router.get('/user/login', getUser)
+router.get('/users', getUsers)
 
-router.post('/user/login', setUser)
+router.post('/user/signup', setUser)
 
 router.put('/user/login', updateUser)
 

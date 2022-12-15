@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import User from '../models/User';
-import { UserInfo } from '../types/UserInfo';
+import Agent from '../models/Agent';
+import { AgentInfo } from '../types/AgentInfo';
 import { serverContext } from "../context";
 import { ResponseFormat } from "../resolvers/Format";
 import { validation } from "../utils/validation";
@@ -9,17 +9,17 @@ import { connection } from "../connection";
 import { CredentialsInput } from "../utils/CredentialsInput";
 import {MongoServerError} from 'mongodb'
 
-class UserResponse {
+class AgentResponse {
     logs?: ResponseFormat[];
-    user?: UserInfo;
+    agent?: AgentInfo;
 }
 
-const collection = connection.db('rrrdatabase').collection('test');
+const collection = connection.db('rrrdatabase').collection('agent');
 
-// @desc   Get User
-// @route  GET /user/login
+// @desc   Get agent
+// @route  GET /agent/login
 // @access Private
-const getUsers = async({req, res}:serverContext):Promise<UserResponse> => {
+const getAgents = async(req: Request, res: Response):Promise<AgentResponse> => {
         
     try {
         let result;
@@ -48,7 +48,7 @@ const getUsers = async({req, res}:serverContext):Promise<UserResponse> => {
             console.log(result);
             logs = [
                 {
-                    field: "Successful Insertion",
+                    field: "Successful Retrieval",
                     message: "Done",
                 }
             ]
@@ -75,41 +75,39 @@ const getUsers = async({req, res}:serverContext):Promise<UserResponse> => {
 
 
 
-// @desc   Get User
-// @route  GET /user/login
+// @desc   Get agent
+// @route  GET /agent/login
 // @access Private
-const setUser = async(req: Request, res: Response):Promise<UserResponse> => {
-    console.log(req)
+const setAgent = async(req: Request, res: Response):Promise<AgentResponse> => {
+    // console.log(req.body)
     try {
-        const userData = req.body  as Pick<UserInfo, "userName" | "userEmail" | "userPassword" | "userAge" | "userAddress" | "userPincode" | "userMobile" | "userCity" | "userState">
-        console.log(userData);
+        const agentData = req.body as Pick<AgentInfo, "agentName" | "agentEmail" | "agentPassword" | "agentAge" | "agentPincode" | "agentMobile" | "agentCity" | "agentState">
+        console.log(agentData);
         let credentials = new CredentialsInput();
-        credentials.email = userData.userEmail;
-        credentials.username = userData.userName;
-        credentials.password = userData.userPassword;
+        credentials.email = agentData.agentEmail;
+        credentials.username = agentData.agentName;
+        credentials.password = agentData.agentPassword;
         let logs = validation(credentials);
         if(logs){
-            res.status(400).json({ logs });
-            return {logs};
+            return { logs };
         }
-        
-        const hashedPassword = await argon2.hash(userData.userPassword);
-        const _user: UserInfo = new User({
-            userName: userData.userName, 
-            userEmail: userData.userEmail,
-            userPassword: hashedPassword,
-            userAge: userData.userAge,
-            userAddress: userData.userAddress,
-            userPincode: userData.userPincode,
-            userMobile: userData.userMobile,
-            userCity: userData.userCity,
-            userState: userData.userState,
+
+        const hashedPassword = await argon2.hash(credentials.password);
+        const _agent: AgentInfo = new Agent({
+            agentName: agentData.agentName,
+            agentEmail: agentData.agentEmail,
+            agentPassword: hashedPassword,
+            agentAge: agentData.agentAge,
+            agentMobile: agentData.agentMobile,
+            agentCity: agentData.agentCity,
+            agentState: agentData.agentState,
+            agentPincode: agentData.agentPincode,
             
         })
 
         let result;
         try {
-            result = await collection.insertOne(_user);
+            result = await collection.insertOne(_agent);
         } catch (err) {
             if (err instanceof MongoServerError && err.code === 11000) {
                 console.error("# Duplicate Data Found:\n", err)
@@ -132,7 +130,7 @@ const setUser = async(req: Request, res: Response):Promise<UserResponse> => {
             console.log(result);
             logs = [
                 {
-                    field: "Successful Retrieval",
+                    field: "Successful Insertion",
                     message: "Done",
                 }
             ]
@@ -158,20 +156,20 @@ const setUser = async(req: Request, res: Response):Promise<UserResponse> => {
     }
 }
 
-// @desc   Get User
-// @route  GET /user/login
+// @desc   Get agent
+// @route  GET /agent/login
 // @access Private
-const updateUser = async({req, res}:serverContext) => {
-    res.status(200).json({ message: 'User Update'});
+const updateAgent = async(req: Request, res: Response) => {
+    res.status(200).json({ message: 'agent Update'});
 }
 
-// @desc   Get User
-// @route  GET /user/login
+// @desc   Get agent
+// @route  GET /agent/login
 // @access Private
-const deleteUser = async({req, res}:serverContext) => {
-    res.status(200).json({ message: 'User Delete'});
+const deleteAgent = async(req: Request, res: Response) => {
+    res.status(200).json({ message: 'agent Delete'});
 }
 
 module.exports = {
-    getUsers, setUser, updateUser, deleteUser
+    getAgents, setAgent, updateAgent, deleteAgent
 }
